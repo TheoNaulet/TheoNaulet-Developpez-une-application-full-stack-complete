@@ -1,16 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-theme-card',
   templateUrl: './theme-card.component.html',
   styleUrls: ['./theme-card.component.scss'],
 })
-export class ThemeCardComponent {
+export class ThemeCardComponent implements OnInit {
   @Input() theme: any;
-  userId: number = 26; 
+  userId: number = 0;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.userId = this.authService.getCurrentUserId();
+  }
 
   toggleSubscription() {
     console.log(this.theme);
@@ -33,5 +41,4 @@ export class ThemeCardComponent {
       });
     }
   }
-  
 }

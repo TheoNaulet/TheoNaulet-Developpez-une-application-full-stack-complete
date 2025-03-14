@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Subscription } from 'src/app/models/subscription.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -18,10 +19,15 @@ export class MeComponent implements OnInit {
 
   subscriptions: any[] = [];
 
-  constructor( private themeService: ThemeService) {}
+  constructor(
+    private themeService: ThemeService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.themeService.getAllSubscribedThemes(26).subscribe({
+    const userId = this.authService.getCurrentUserId();
+    
+    this.themeService.getAllSubscribedThemes(userId).subscribe({
       next: (response) => {
         console.log("Subscribed themes", response);
         this.subscriptions = response;

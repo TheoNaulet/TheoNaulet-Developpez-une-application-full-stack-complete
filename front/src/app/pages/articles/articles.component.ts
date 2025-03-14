@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-articles',
@@ -12,7 +13,11 @@ export class ArticlesComponent implements OnInit {
   articles: any[] = [];
   isDescending: boolean = true; // Par défaut, tri décroissant (du plus récent au plus ancien)
 
-  constructor(private router: Router, private articleService: ArticleService) {}
+  constructor(
+    private router: Router, 
+    private articleService: ArticleService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     console.log("ArticlesComponent initialized");
@@ -20,7 +25,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   loadArticles() {
-    const userId = 26; 
+    const userId = this.authService.getCurrentUserId();
 
     this.articleService.getArticlesBySubscribedThemes(userId).subscribe({
       next: (response) => {

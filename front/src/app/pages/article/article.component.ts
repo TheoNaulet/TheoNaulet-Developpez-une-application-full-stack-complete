@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ArticleService } from 'src/app/services/article.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-article',
@@ -15,7 +16,12 @@ export class ArticleComponent implements OnInit {
   newComment: string = "";
   currentUserId: number = 0;
 
-  constructor(private route: ActivatedRoute, private location: Location, private articleService: ArticleService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private location: Location, 
+    private articleService: ArticleService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.articleId = Number(this.route.snapshot.paramMap.get('id'));
@@ -24,7 +30,7 @@ export class ArticleComponent implements OnInit {
   }
 
   getCurrentUserId(): void {
-    this.currentUserId = 26; 
+    this.currentUserId = this.authService.getCurrentUserId();
   }
 
   loadArticleData(): void {
