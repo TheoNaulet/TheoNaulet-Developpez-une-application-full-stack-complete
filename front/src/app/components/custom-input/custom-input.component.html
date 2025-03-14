@@ -2,6 +2,11 @@
   <label *ngIf="label">{{ label }}</label>
   
   <mat-form-field appearance="outline" [ngStyle]="{'border-color': borderColor}">
-    <input matInput [type]="type" [placeholder]="placeholder" [value]="innerValue" (input)="setValue($event)" />
+    <ng-container *ngIf="type !== 'textarea'; else textareaTemplate">
+      <input matInput [type]="type" [placeholder]="placeholder" [value]="innerValue" (input)="setValue($event)" />
+    </ng-container>
+    <ng-template #textareaTemplate>
+      <textarea matInput [placeholder]="placeholder" [value]="innerValue" (input)="setValue($event)" rows="6"></textarea>
+    </ng-template>
   </mat-form-field>
 </div>

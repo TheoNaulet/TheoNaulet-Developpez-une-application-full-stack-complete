@@ -20,7 +20,7 @@ form {
   flex-direction: column;
   gap: 15px;
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   padding: 20px;
   border-radius: 10px;
 }
@@ -65,5 +65,9 @@ form {
   .custom-select {
     font-size: 14px;
     padding: 8px;
+  }
+  
+  form {
+    max-width: 90%; /* Responsive width for mobile */
   }
 }
