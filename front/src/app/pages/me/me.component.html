@@ -1,0 +1,22 @@
+<div class="me-container">
+
+    <h2>Profil utilisateur</h2>
+    <form (submit)="saveProfile()" class="profile-form">
+        <app-custom-input label="Username" [(ngModel)]="user.username" name="username"></app-custom-input>
+        <app-custom-input label="Email" type="email" [(ngModel)]="user.email" name="email"></app-custom-input>
+        <app-custom-input label="Mot de passe" type="password" [(ngModel)]="user.password" name="password"></app-custom-input>
+    
+        <app-custom-button label="Sauvegarder" type="primary" (clickEvent)="saveProfile()"></app-custom-button>
+    </form>
+    
+    
+    
+      
+    <hr />
+  
+    <h3>Abonnements</h3>
+    <div class="subscriptions-grid">
+      <app-theme-card *ngFor="let theme of subscriptions" [theme]="theme"></app-theme-card>
+    </div>
+  </div>
+  
