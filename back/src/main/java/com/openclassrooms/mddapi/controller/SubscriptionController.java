@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
+import com.openclassrooms.mddapi.dto.ThemeWithSubscriptionDTO;
 import com.openclassrooms.mddapi.model.Subscription;
 import com.openclassrooms.mddapi.service.SubscriptionService;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,6 @@ public class SubscriptionController {
      */
     @DeleteMapping("/unsubscribe")
     public ResponseEntity<Void> unsubscribe(@RequestParam Long userId, @RequestParam Long themeId) {
-        System.out.println("userId = " + userId);
-        System.out.println("themeId = " + themeId);
         subscriptionService.unsubscribe(userId, themeId);
         return ResponseEntity.noContent().build();
     }
@@ -40,7 +39,7 @@ public class SubscriptionController {
      * Récupérer tous les thèmes suivis par un utilisateur.
      */
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Subscription>> getUserSubscriptions(@PathVariable Long userId) {
+    public ResponseEntity<List<ThemeWithSubscriptionDTO>> getUserSubscriptions(@PathVariable Long userId) {
         return ResponseEntity.ok(subscriptionService.getSubscriptionsByUser(userId));
     }
 }

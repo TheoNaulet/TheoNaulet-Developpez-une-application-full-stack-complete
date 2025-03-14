@@ -24,14 +24,14 @@ export class MeComponent implements OnInit {
     this.themeService.getAllSubscribedThemes(26).subscribe({
       next: (response) => {
         console.log("Subscribed themes", response);
-        this.subscriptions = response.map((sub:Subscription) => sub.theme);
+        this.subscriptions = response;
       },
       error: (error) => {
-        console.error(error);
+        console.error("Erreur lors de la récupération des abonnements :", error);
       }
     });
   }
-
+  
   saveProfile() {
     console.log("Profil mis à jour :", this.user);
   }

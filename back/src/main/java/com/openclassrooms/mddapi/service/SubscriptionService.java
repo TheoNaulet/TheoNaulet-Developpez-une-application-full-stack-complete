@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.service;
 
+import com.openclassrooms.mddapi.dto.ThemeWithSubscriptionDTO;
 import com.openclassrooms.mddapi.model.Subscription;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.model.Theme;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionService {
@@ -65,10 +67,26 @@ public class SubscriptionService {
     /**
      * Récupérer tous les thèmes auxquels un utilisateur est abonné.
      */
-    public List<Subscription> getSubscriptionsByUser(Long userId) {
+    /**
+     * Récupérer tous les thèmes auxquels un utilisateur est abonné (au format ThemeWithSubscriptionDTO).
+     */
+    public List<ThemeWithSubscriptionDTO> getSubscriptionsByUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé !"));
 
-        return subscriptionRepository.findByUser(user);
+        // Récupérer tous les abonnements de l'utilisateur
+        List<Subscription> subscriptions = subscriptionRepository.findByUser(user);
+
+        // Transformer chaque abonnement en ThemeWithSubscriptionDTO
+        return subscriptions.stream().map(subscription -> {
+            Theme theme = subscription.getTheme();
+            return new ThemeWithSubscriptionDTO(
+                    theme.getId(),
+                    theme.getTitle(),
+                    theme.getDescription(),
+                    true
+            );
+        }).collect(Collectors.toList());
     }
+
 }
