@@ -1,20 +1,38 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean = false;
   showFullNav: boolean = false;
   isMobile: boolean = window.innerWidth <= 768; 
+  private authSubscription: Subscription | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    this.isAuthenticated = !!localStorage.getItem('token');
+    // Initial check
+    this.isAuthenticated = this.authService.isLoggedIn();
+    
+    // Subscribe to auth state changes
+    this.authSubscription = this.authService.authState$.subscribe(
+      isAuthenticated => {
+        this.isAuthenticated = isAuthenticated;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription when component is destroyed
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -34,8 +52,7 @@ export class NavbarComponent {
   }
 
   logout() {
-    this.isAuthenticated = false;
-    localStorage.removeItem('token');
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

@@ -23,7 +23,6 @@ export class LoginComponent {
     this.authService.login(this.user.email, this.user.password).subscribe({
       next: (response) => {
         console.log('Connexion réussie', response);
-        localStorage.setItem('token', response.token);
         this.router.navigate(['/articles']);
       },
       error: (error) => {
