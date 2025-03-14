@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ArticlesComponent implements OnInit {
   
   articles: any[] = [];
-  isDescending: boolean = true; // Par défaut, tri décroissant (du plus récent au plus ancien)
+  isDescending: boolean = true;
 
   constructor(
     private router: Router, 
