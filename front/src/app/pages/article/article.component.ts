@@ -27,8 +27,8 @@ export class ArticleComponent implements OnInit {
           title: response.title,
           date: response.createdAt,
           author: response.authorUsername,
-          theme: response.theme ? response.theme.title : "Aucun thème", 
-          content: response.content
+          theme: response.themeTitle ? response.themeTitle : "Aucun thème", 
+          content: response.content,
         };
 
         // Mettre à jour les commentaires

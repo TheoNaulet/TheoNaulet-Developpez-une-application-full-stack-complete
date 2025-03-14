@@ -71,11 +71,8 @@ public class ArticleService {
      * Récupérer un article par son ID et le convertir en DTO avec ses commentaires.
      */
     public ArticleDTO getArticleById(Long id) {
-        System.out.println("id = " + id);
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Article non trouvé !"));
-
-        System.out.println(article);
 
 
         List<CommentDTO> comments = commentRepository.findByArticle(article).stream()
@@ -94,6 +91,8 @@ public class ArticleService {
                 article.getCreatedAt(),
                 article.getUpdatedAt(),
                 article.getAuthor().getUsername(),
+                article.getTheme() != null ? article.getTheme().getId() : null,
+                article.getTheme() != null ? article.getTheme().getTitle() : null,
                 comments
         );
     }
