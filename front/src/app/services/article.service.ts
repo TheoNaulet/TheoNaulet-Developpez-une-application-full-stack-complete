@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ArticleService {
   private apiUrl = 'http://localhost:8080/api/articles';
-
+  private commentsUrl = 'http://localhost:8080/api/comments';
 
   constructor(private http: HttpClient) {}
 
@@ -21,5 +21,13 @@ export class ArticleService {
 
   getArticleById(articleId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${articleId}`);
+  }
+
+  addComment(articleId: number, userId: number, content: string): Observable<any> {
+    return this.http.post(this.commentsUrl, {
+      articleId: articleId,
+      userId: userId,
+      content: content
+    });
   }
 }
