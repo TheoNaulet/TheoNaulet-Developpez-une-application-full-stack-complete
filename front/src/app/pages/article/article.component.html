@@ -1,0 +1,39 @@
+<div class="page-container">
+    <button mat-icon-button class="back-button-web" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    <div class="article-container">
+      <div class="header">
+        <button mat-icon-button class="back-button-mobile" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2>{{ article.title }}</h2>
+      </div>
+  
+      <div class="meta">
+        <span>{{ article.date }}</span>
+        <span>{{ article.author }}</span>
+        <span>{{ article.theme }}</span>
+      </div>
+  
+      <p class="article-content">{{ article.content }}</p>
+  
+      <hr />
+  
+      <h3>Commentaires</h3>
+      <div class="comments-section">
+        <div *ngFor="let comment of comments" class="comment">
+          <span class="username">{{ comment.username }}</span>
+          <div class="comment-box">{{ comment.content }}</div>
+        </div>
+      </div>
+  
+      <div class="comment-form">
+        <textarea [(ngModel)]="newComment" placeholder="Écrivez ici votre commentaire"></textarea>
+        <button mat-icon-button (click)="addComment()">
+          <mat-icon>send</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  
