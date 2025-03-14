@@ -1,0 +1,22 @@
+<div class="signup-container">
+  <button mat-icon-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <img src="/assets/logo_p6.png" alt="MDD Logo" class="logo mobile-only" />
+
+  <h2>Inscription</h2>
+
+  <form (submit)="onSignup()">
+
+      <app-custom-input label="Nom d'utilisateur" name="username" [(ngModel)]="user.username"></app-custom-input>
+      <app-custom-input label="Adresse e-mail" type="email" name="email" [(ngModel)]="user.email"></app-custom-input>
+      <app-custom-input label="Mot de passe" type="password" name="password" [(ngModel)]="user.password"></app-custom-input>
+
+    
+
+    <div class="button-container">
+      <app-custom-button label="S'inscrire" type="primary" (clickEvent)="onSignup()"></app-custom-button>
+    </div>
+  </form>
+</div>
