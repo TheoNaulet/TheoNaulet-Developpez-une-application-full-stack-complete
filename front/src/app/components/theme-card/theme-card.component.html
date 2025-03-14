@@ -1,0 +1,13 @@
+<div class="theme-card">
+    <h3>{{ theme.title }}</h3>
+    <p>{{ theme.description }}</p>
+  
+    <div class="button-container">
+      <app-custom-button
+        [label]="theme.isSubscribed ? 'Déjà abonné' : 'S\'abonner'"
+        [type]="theme.isSubscribed ? 'secondary' : 'primary'"
+        (clickEvent)="toggleSubscription()"
+      ></app-custom-button>
+    </div>
+  </div>
+  

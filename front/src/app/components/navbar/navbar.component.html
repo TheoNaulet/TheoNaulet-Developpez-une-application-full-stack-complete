@@ -1,0 +1,28 @@
+<nav *ngIf="shouldShowNavbar && (isAuthenticated || !isMobile)" class="navbar">
+    <div class="navbar-content">
+      <img src="/assets/logo_p6.png" alt="Logo MDD" class="logo" />
+  
+      <button *ngIf="isAuthenticated" mat-icon-button class="mobile-menu" (click)="toggleMenu()">
+        <mat-icon>menu</mat-icon>
+      </button>
+  
+      <div *ngIf="isAuthenticated" class="nav-links">
+        <a (click)="logout()" class="logout">Se déconnecter</a>
+        <a routerLink="/articles">Articles</a>
+        <a routerLink="/themes">Thèmes</a>
+        <a routerLink="/me">
+          <button mat-icon-button class="avatar">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </a>
+      </div>
+  
+      <!-- Mobile: Menu latéral -->
+      <div *ngIf="showFullNav" class="mobile-nav">
+        <a (click)="logout()" class="logout">Se déconnecter</a>
+        <a routerLink="/articles">Articles</a>
+        <a routerLink="/themes">Thèmes</a>
+      </div>
+    </div>
+  </nav>
+  

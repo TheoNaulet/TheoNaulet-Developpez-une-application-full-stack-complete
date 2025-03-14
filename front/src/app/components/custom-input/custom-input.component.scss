@@ -1,0 +1,21 @@
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    border-radius: 8px;
+    border-width: 1px;
+    transition: border-color 0.3s ease-in-out;
+  }
+  

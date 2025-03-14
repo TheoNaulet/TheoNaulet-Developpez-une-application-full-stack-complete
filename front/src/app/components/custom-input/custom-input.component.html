@@ -1,0 +1,7 @@
+<div class="form-group">
+  <label *ngIf="label">{{ label }}</label>
+  
+  <mat-form-field appearance="outline" [ngStyle]="{'border-color': borderColor}">
+    <input matInput [type]="type" [placeholder]="placeholder" [value]="innerValue" (input)="setValue($event)" />
+  </mat-form-field>
+</div>
