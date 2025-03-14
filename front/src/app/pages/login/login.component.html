@@ -6,13 +6,12 @@
     <h2>Se connecter</h2>
   
     <form (submit)="onLogin()">
-      <app-custom-input label="E-mail ou nom d’utilisateur" name="email"  placeholder="Entrez votre identifiant" [(ngModel)]="user.email" controlName="emailOrUsername"></app-custom-input>
+      <app-custom-input label="E-mail ou nom d’utilisateur" name="emailOrUsername" placeholder="Entrez votre identifiant" [(ngModel)]="user.emailOrUsername" controlName="emailOrUsername"></app-custom-input>
       
-      <app-custom-input label="Mot de passe" type="password"  name="password" placeholder="Entrez votre mot de passe" [(ngModel)]="user.password" controlName="password"></app-custom-input>
+      <app-custom-input label="Mot de passe" type="password" name="password" placeholder="Entrez votre mot de passe" [(ngModel)]="user.password" controlName="password"></app-custom-input>
   
       <div class="button-container">
         <app-custom-button label="Se connecter" type="primary" (clickEvent)="onLogin()"></app-custom-button>
       </div>
     </form>
   </div>
-  

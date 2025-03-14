@@ -180,7 +180,7 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> loginUser(@Valid @RequestBody LoginDTO loginDTO) {
         // Authenticate the user
         Authentication authenticate = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword())
+            new UsernamePasswordAuthenticationToken(loginDTO.getEmailOrUsername(), loginDTO.getPassword())
         );
 
         // Generate a JWT token

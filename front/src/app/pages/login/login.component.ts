@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent {
   user={
-    email:"",
+    emailOrUsername:"",
     password:""
   }
 
@@ -20,7 +20,7 @@ export class LoginComponent {
   }
 
   onLogin() {
-    this.authService.login(this.user.email, this.user.password).subscribe({
+    this.authService.login(this.user.emailOrUsername, this.user.password).subscribe({
       next: (response) => {
         console.log('Connexion réussie', response);
         this.router.navigate(['/articles']);
