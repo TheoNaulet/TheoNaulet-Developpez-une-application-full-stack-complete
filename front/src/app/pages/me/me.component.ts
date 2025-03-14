@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ThemeService } from 'src/app/services/theme.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -12,22 +13,46 @@ import { AuthService } from 'src/app/services/auth.service';
 export class MeComponent implements OnInit {
 
   user = {
-    username: 'Username',
-    email: 'email@email.fr',
+    username: '',
+    email: '',
     password: ''
   };
 
+  userId: number = 0;
   subscriptions: any[] = [];
+  isLoading: boolean = true;
 
   constructor(
     private themeService: ThemeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
-    const userId = this.authService.getCurrentUserId();
-    
-    this.themeService.getAllSubscribedThemes(userId).subscribe({
+    this.userId = this.authService.getCurrentUserId();
+    this.loadUserData();
+    this.loadSubscriptions();
+  }
+
+  loadUserData() {
+    this.isLoading = true;
+    this.authService.fetchCurrentUser().subscribe({
+      next: (userData) => {
+        if (userData) {
+          this.user.username = userData.username || '';
+          this.user.email = userData.email || '';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading user data:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+  
+  loadSubscriptions() {
+    this.themeService.getAllSubscribedThemes(this.userId).subscribe({
       next: (response) => {
         console.log("Subscribed themes", response);
         this.subscriptions = response;
@@ -39,6 +64,21 @@ export class MeComponent implements OnInit {
   }
   
   saveProfile() {
-    console.log("Profil mis à jour :", this.user);
+    if (!this.user.username || !this.user.email) {
+      console.error("Username and email are required");
+      return;
+    }
+
+    const updateData: any = {
+      username: this.user.username,
+      email: this.user.email
+    };
+    
+    // Only include password if it's provided
+    if (this.user.password) {
+      updateData.password = this.user.password;
+    }
+    
+    console.log("Tentative de mise à jour du profil :", updateData);
   }
 }
