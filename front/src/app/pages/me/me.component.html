@@ -10,7 +10,7 @@
     <form *ngIf="!isLoading" (submit)="saveProfile()" class="profile-form">
         <app-custom-input label="Username" [(ngModel)]="user.username" name="username"></app-custom-input>
         <app-custom-input label="Email" type="email" [(ngModel)]="user.email" name="email"></app-custom-input>
-        <app-custom-input label="Mot de passe" type="password" [(ngModel)]="user.password" name="password" placeholder="Laissez vide pour ne pas changer"></app-custom-input>
+        <app-custom-input label="Mot de passe" type="password" [(ngModel)]="user.password" name="password" placeholder=""></app-custom-input>
     
         <app-custom-button label="Sauvegarder" type="primary" (clickEvent)="saveProfile()"></app-custom-button>
     </form>
