@@ -1,0 +1,16 @@
+.themes-container {
+    padding: 20px;
+  }
+  
+  .themes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    column-gap: 50px;
+  }
+  
+  @media (max-width: 768px) {
+    .themes-grid {
+      grid-template-columns: 1fr;
+    }
+  }
