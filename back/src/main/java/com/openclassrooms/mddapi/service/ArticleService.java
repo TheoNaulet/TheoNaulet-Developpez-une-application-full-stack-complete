@@ -101,6 +101,8 @@ public class ArticleService {
         return new CommentDTO(
                 comment.getId(),
                 comment.getContent(),
+                comment.getArticle().getId(),
+                comment.getSender().getId(),
                 comment.getSender().getUsername(),
                 comment.getCreatedAt()
         );
@@ -174,7 +176,4 @@ public class ArticleService {
         dto.setComments(commentDTOs);
         return dto;
     }
-    
-    
-
 }

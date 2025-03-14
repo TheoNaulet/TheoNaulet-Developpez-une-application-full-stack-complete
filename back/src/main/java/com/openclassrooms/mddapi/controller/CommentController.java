@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.controller;
 
 import com.openclassrooms.mddapi.dto.CommentDTO;
-import com.openclassrooms.mddapi.model.Comment;
 import com.openclassrooms.mddapi.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class CommentController {
      * Ajouter un commentaire à un article.
      */
     @PostMapping
-    public ResponseEntity<Comment> addComment(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentDTO commentDTO) {
         return ResponseEntity.ok(commentService.addComment(commentDTO));
     }
 
@@ -30,7 +29,7 @@ public class CommentController {
      * Récupérer tous les commentaires d'un article.
      */
     @GetMapping("/article/{articleId}")
-    public ResponseEntity<List<Comment>> getCommentsByArticle(@PathVariable Long articleId) {
+    public ResponseEntity<List<CommentDTO>> getCommentsByArticle(@PathVariable Long articleId) {
         return ResponseEntity.ok(commentService.getCommentsByArticle(articleId));
     }
 
