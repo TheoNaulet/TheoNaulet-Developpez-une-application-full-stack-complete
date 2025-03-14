@@ -3,6 +3,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -20,11 +21,13 @@ export class MeComponent implements OnInit {
 
   userId: number = 0;
   subscriptions: any[] = [];
-  isLoading: boolean = true;
+  updateSuccess: boolean = false;
+  updateError: string = '';
 
   constructor(
     private themeService: ThemeService,
     private authService: AuthService,
+    private userService: UserService,
     private http: HttpClient
   ) {}
 
@@ -35,18 +38,16 @@ export class MeComponent implements OnInit {
   }
 
   loadUserData() {
-    this.isLoading = true;
-    this.authService.fetchCurrentUser().subscribe({
+    this.userService.getCurrentUser().subscribe({
       next: (userData) => {
         if (userData) {
           this.user.username = userData.username || '';
           this.user.email = userData.email || '';
+          // Don't set password - leave it empty for security
         }
-        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error loading user data:', error);
-        this.isLoading = false;
       }
     });
   }
@@ -64,8 +65,11 @@ export class MeComponent implements OnInit {
   }
   
   saveProfile() {
+    this.updateSuccess = false;
+    this.updateError = '';
+    
     if (!this.user.username || !this.user.email) {
-      console.error("Username and email are required");
+      this.updateError = "Le nom d'utilisateur et l'email sont obligatoires";
       return;
     }
 
@@ -80,5 +84,18 @@ export class MeComponent implements OnInit {
     }
     
     console.log("Tentative de mise à jour du profil :", updateData);
+    
+    this.userService.updateUserProfile(this.userId, updateData).subscribe({
+      next: (response) => {
+        console.log("Profil mis à jour avec succès", response);
+        this.updateSuccess = true;
+        // Clear password field after successful update
+        this.user.password = '';
+      },
+      error: (error) => {
+        console.error("Erreur lors de la mise à jour du profil", error);
+        this.updateError = error.error?.message || "Une erreur est survenue lors de la mise à jour du profil";
+      }
+    });
   }
 }

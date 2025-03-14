@@ -68,16 +68,33 @@ public class UserService {
     /**
      * Met à jour un utilisateur.
      */
-    // public User updateUser(Long id, UserDTO userDTO) {
-    //     User user = getUserById(id);
+    public User updateUser(Long id, UserDTO userDTO) {
+        User user = getUserById(id);
+        
+        // Check if username is being updated and if it's already taken by another user
+        if (!user.getUsername().equals(userDTO.getUsername()) && 
+            userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
+            throw new RuntimeException("Ce nom d'utilisateur est déjà pris !");
+        }
+        
+        // Check if email is being updated and if it's already taken by another user
+        if (!user.getEmail().equals(userDTO.getEmail()) && 
+            userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
+            throw new RuntimeException("Cet email est déjà utilisé !");
+        }
 
-    //     user.setUsername(userDTO.getUsername());
-    //     user.setEmail(userDTO.getEmail());
-    //     user.setPassword(userDTO.getPassword());
-    //     user.setUpdatedAt(LocalDate.now());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        
+        // Only update password if it's provided
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        
+        user.setUpdatedAt(LocalDate.now());
 
-    //     return userRepository.save(user);
-    // }
+        return userRepository.save(user);
+    }
 
     /**
      * Supprime un utilisateur par ID.

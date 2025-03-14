@@ -49,13 +49,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    // /**
-    //  * Met à jour un utilisateur.
-    //  */
-    // @PutMapping("/{id}")
-    // public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-    //     return ResponseEntity.ok(userService.updateUser(id, userDTO));
-    // }
+    /**
+     * Met à jour un utilisateur.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
+    }
 
     /**
      * Supprime un utilisateur.

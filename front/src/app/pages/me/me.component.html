@@ -1,17 +1,19 @@
 <div class="me-container">
-
     <h2>Profil utilisateur</h2>
     
-    <div *ngIf="isLoading" class="loading-indicator">
-      <div class="spinner"></div>
-      <p>Chargement de vos informations...</p>
-    </div>
-    
-    <form *ngIf="!isLoading" (submit)="saveProfile()" class="profile-form">
+    <form (submit)="saveProfile()" class="profile-form">
         <app-custom-input label="Username" [(ngModel)]="user.username" name="username"></app-custom-input>
         <app-custom-input label="Email" type="email" [(ngModel)]="user.email" name="email"></app-custom-input>
         <app-custom-input label="Mot de passe" type="password" [(ngModel)]="user.password" name="password" placeholder=""></app-custom-input>
     
+        <div *ngIf="updateSuccess" class="success-message">
+            Profil mis à jour avec succès !
+        </div>
+        
+        <div *ngIf="updateError" class="error-message">
+            {{ updateError }}
+        </div>
+        
         <app-custom-button label="Sauvegarder" type="primary" (clickEvent)="saveProfile()"></app-custom-button>
     </form>
     
@@ -24,4 +26,4 @@
         Vous n'êtes abonné à aucun thème pour le moment.
       </div>
     </div>
-  </div>
+</div>
