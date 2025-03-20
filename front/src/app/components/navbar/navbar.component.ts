@@ -35,11 +35,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.isMobile = window.innerWidth <= 768;
-  }
-
   get shouldShowNavbar(): boolean {
     const route = this.router.url;
     if (route === '/') return false; 
@@ -51,8 +46,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.showFullNav = !this.showFullNav;
   }
 
+  closeMenu() {
+    this.showFullNav = false;
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  @HostListener('window:resize', ['$event'])  
+  onResize() {
+    this.isMobile = window.innerWidth <= 768;
+
+    if (!this.isMobile) {
+      this.showFullNav = false;
+    }
+  }
+
 }

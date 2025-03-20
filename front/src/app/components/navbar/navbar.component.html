@@ -18,11 +18,23 @@
       </div>
   
       <!-- Mobile: Menu latéral -->
-      <div *ngIf="showFullNav" class="mobile-nav">
+      <div *ngIf="showFullNav" class="mobile-nav-backdrop" (click)="closeMenu()"></div>
+
+      <div [ngClass]="{'show': showFullNav}" class="mobile-nav" (click)="$event.stopPropagation()">
         <a (click)="logout()" class="logout">Se déconnecter</a>
-        <a routerLink="/articles">Articles</a>
-        <a routerLink="/themes">Thèmes</a>
+        <a routerLink="/articles" (click)="closeMenu()">Articles</a>
+        <a routerLink="/themes" (click)="closeMenu()">Thèmes</a>
+
+        <!-- Avatar en bas -->
+        <div class="mobile-nav-avatar">
+          <a routerLink="/me" (click)="closeMenu()">
+            <button mat-icon-button class="avatar">
+              <mat-icon>account_circle</mat-icon>
+            </button>
+          </a>
+        </div>
       </div>
+
     </div>
   </nav>
   
