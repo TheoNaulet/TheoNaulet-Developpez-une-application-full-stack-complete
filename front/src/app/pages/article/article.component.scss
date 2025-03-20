@@ -44,6 +44,8 @@
     font-size: 16px;
     line-height: 1.6;
     margin-top: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   hr {
@@ -101,6 +103,8 @@
     padding: 10px;
     border-radius: 8px;
     margin-top: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
   
   .comment-form {
