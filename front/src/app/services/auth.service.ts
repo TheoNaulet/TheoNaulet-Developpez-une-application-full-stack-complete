@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { tap, switchMap, map, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { tap, switchMap, map, catchError, takeUntil } from 'rxjs/operators';
+import { User } from '../models/user.model';
 
 interface AuthResponse {
   token: string;
@@ -12,10 +13,11 @@ interface AuthResponse {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private apiUrl = 'http://localhost:8080/auth';
   private authStateSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
   public authState$ = this.authStateSubject.asObservable();
+  private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) {
     // Initialize auth state from localStorage
@@ -35,9 +37,10 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           this.authStateSubject.next(true);
           // After registration, fetch user info
-          this.fetchCurrentUser().subscribe();
+          this.fetchCurrentUser().pipe(takeUntil(this.destroy$)).subscribe();
         }
-      })
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -57,15 +60,17 @@ export class AuthService {
           catchError(error => {
             console.error('Error fetching user after login:', error);
             return of(response);
-          })
+          }),
+          takeUntil(this.destroy$)
         );
-      })
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
   // Fetch current user info
-  fetchCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/me`).pipe(
+  fetchCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
       tap(user => {
         if (user && user.id) {
           localStorage.setItem('userId', user.id.toString());
@@ -73,8 +78,9 @@ export class AuthService {
       }),
       catchError(error => {
         console.error('Error fetching current user:', error);
-        return of(null);
-      })
+        return of({} as User);
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -89,5 +95,10 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     this.authStateSubject.next(false);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

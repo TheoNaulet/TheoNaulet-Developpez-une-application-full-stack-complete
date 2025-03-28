@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject, Subject } from 'rxjs';
+import { catchError, map, tap, takeUntil } from 'rxjs/operators';
+import { User, UserProfileUpdate } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService implements OnDestroy {
   private authApiUrl = 'http://localhost:8080/auth';
   private usersApiUrl = 'http://localhost:8080/api/users';
   private currentUserId: number | null = null;
-  private userSubject = new BehaviorSubject<any>(null);
+  private userSubject = new BehaviorSubject<User | null>(null);
   public user$ = this.userSubject.asObservable();
+  private destroy$ = new Subject<void>();
 
   constructor(private http: HttpClient) {}
 
   /**
    * Get current user from API
    */
-  getCurrentUser(): Observable<any> {
-    return this.http.get<any>(`${this.authApiUrl}/me`).pipe(
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.authApiUrl}/me`).pipe(
       tap(user => {
         if (user && user.id) {
           this.setCurrentUserId(user.id);
@@ -28,8 +30,9 @@ export class UserService {
       }),
       catchError(error => {
         console.error('Error fetching current user:', error);
-        return of(null);
-      })
+        return of({} as User);
+      }),
+      takeUntil(this.destroy$)
     );
   }
 
@@ -60,11 +63,17 @@ export class UserService {
   /**
    * Update user profile
    */
-  updateUserProfile(userId: number, userData: any): Observable<any> {
-    return this.http.put<any>(`${this.usersApiUrl}/${userId}`, userData).pipe(
+  updateUserProfile(userId: number, userData: UserProfileUpdate): Observable<User> {
+    return this.http.put<User>(`${this.usersApiUrl}/${userId}`, userData).pipe(
       tap(updatedUser => {
         this.userSubject.next(updatedUser);
-      })
+      }),
+      takeUntil(this.destroy$)
     );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
