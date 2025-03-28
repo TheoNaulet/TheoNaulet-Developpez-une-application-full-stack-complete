@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ArticleService } from 'src/app/services/article.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Article } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-articles',
@@ -10,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ArticlesComponent implements OnInit {
   
-  articles: any[] = [];
+  articles: Article[] = [];
   isDescending: boolean = true;
 
   constructor(
@@ -28,11 +29,11 @@ export class ArticlesComponent implements OnInit {
     const userId = this.authService.getCurrentUserId();
 
     this.articleService.getArticlesBySubscribedThemes(userId).subscribe({
-      next: (response) => {
+      next: (response: Article[]) => {
         console.log("Articles reçus :", response);
         this.articles = response; 
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Erreur lors de la récupération des articles", error);
       }
     });

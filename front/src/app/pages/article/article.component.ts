@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ArticleService } from 'src/app/services/article.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Article, ArticleDisplay, Comment, CommentDisplay } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-article',
@@ -11,8 +12,14 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ArticleComponent implements OnInit {
   articleId: number | null = null;
-  article: any = {}; 
-  comments: any[] = []; 
+  article: ArticleDisplay = {
+    title: '',
+    date: '',
+    author: '',
+    theme: '',
+    content: ''
+  }; 
+  comments: CommentDisplay[] = []; 
   newComment: string = "";
   currentUserId: number = 0;
 
@@ -37,24 +44,24 @@ export class ArticleComponent implements OnInit {
     if (!this.articleId) return;
 
     this.articleService.getArticleById(this.articleId).subscribe({
-      next: (response: any) => {
+      next: (response: Article) => {
         console.log("Article reçu :", response);
         
         this.article = {
           title: response.title,
           date: response.createdAt,
-          author: response.authorUsername,
+          author: response.authorUsername || '',
           theme: response.themeTitle ? response.themeTitle : "Aucun thème", 
           content: response.content,
         };
 
         // Update comments
-        this.comments = response.comments.map((comment: any) => ({
-          username: comment.senderUsername,
+        this.comments = response.comments?.map((comment: Comment) => ({
+          username: comment.senderUsername || '',
           content: comment.content
-        }));
+        })) || [];
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         console.error("Erreur lors de la récupération de l'article", error);
       }
     });
@@ -68,7 +75,7 @@ export class ArticleComponent implements OnInit {
     if (this.newComment.trim() === "" || !this.articleId) return;
   
     this.articleService.addComment(this.articleId, this.currentUserId, this.newComment).subscribe({
-      next: (response) => {
+      next: (response: Comment) => {
         console.log("Commentaire ajouté :", response);
   
         this.comments.push({
@@ -78,7 +85,7 @@ export class ArticleComponent implements OnInit {
   
         this.newComment = "";
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Erreur lors de l'ajout du commentaire", error);
       }
     });

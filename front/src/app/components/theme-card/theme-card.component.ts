@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
+import { Theme } from 'src/app/models/theme.model';
 
 @Component({
   selector: 'app-theme-card',
@@ -8,7 +9,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./theme-card.component.scss'],
 })
 export class ThemeCardComponent implements OnInit {
-  @Input() theme: any;
+  @Input() theme: Theme = {
+    id: 0,
+    title: '',
+    description: '',
+    isSubscribed: false
+  };
   userId: number = 0;
 
   constructor(
@@ -21,7 +27,10 @@ export class ThemeCardComponent implements OnInit {
   }
 
   toggleSubscription() {
-    console.log(this.theme);
+    if (!this.theme) {
+      console.error('Theme is not defined');
+      return;
+    }
   
     if (this.theme.isSubscribed) {
       this.themeService.unsubscribeToTheme(this.userId, this.theme.id).subscribe({
@@ -29,7 +38,7 @@ export class ThemeCardComponent implements OnInit {
           this.theme = { ...this.theme, isSubscribed: false };
           console.log(`Désabonné au thème ${this.theme.id}`);
         },
-        error: (err) => console.error('Erreur désabonnement', err),
+        error: (err: Error) => console.error('Erreur désabonnement', err),
       });
     } else {
       this.themeService.subscribeToTheme(this.userId, this.theme.id).subscribe({
@@ -37,7 +46,7 @@ export class ThemeCardComponent implements OnInit {
           this.theme = { ...this.theme, isSubscribed: true };
           console.log(`Abonné au thème ${this.theme.id}`);
         },
-        error: (err) => console.error('Erreur abonnement', err),
+        error: (err: Error) => console.error('Erreur abonnement', err),
       });
     }
   }

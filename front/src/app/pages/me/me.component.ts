@@ -4,6 +4,7 @@ import { Subscription } from 'src/app/models/subscription.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from 'src/app/services/user.service';
+import { User, UserProfileUpdate } from 'src/app/models/user.model';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class MeComponent implements OnInit {
   };
 
   userId: number = 0;
-  subscriptions: any[] = [];
+  subscriptions: Subscription[] = [];
   updateSuccess: boolean = false;
   updateError: string = '';
 
@@ -39,14 +40,13 @@ export class MeComponent implements OnInit {
 
   loadUserData() {
     this.userService.getCurrentUser().subscribe({
-      next: (userData) => {
+      next: (userData: User) => {
         if (userData) {
           this.user.username = userData.username || '';
           this.user.email = userData.email || '';
-          // Don't set password - leave it empty for security
         }
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error('Error loading user data:', error);
       }
     });
@@ -54,11 +54,11 @@ export class MeComponent implements OnInit {
   
   loadSubscriptions() {
     this.themeService.getAllSubscribedThemes(this.userId).subscribe({
-      next: (response) => {
+      next: (response: Subscription[]) => {
         console.log("Subscribed themes", response);
         this.subscriptions = response;
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Erreur lors de la récupération des abonnements :", error);
       }
     });
@@ -73,7 +73,7 @@ export class MeComponent implements OnInit {
       return;
     }
 
-    const updateData: any = {
+    const updateData: UserProfileUpdate = {
       username: this.user.username,
       email: this.user.email
     };
@@ -86,7 +86,7 @@ export class MeComponent implements OnInit {
     console.log("Tentative de mise à jour du profil :", updateData);
     
     this.userService.updateUserProfile(this.userId, updateData).subscribe({
-      next: (response) => {
+      next: (response: User) => {
         console.log("Profil mis à jour avec succès", response);
         this.updateSuccess = true;
         // Clear password field after successful update

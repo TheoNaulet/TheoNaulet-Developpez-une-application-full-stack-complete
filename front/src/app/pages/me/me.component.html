@@ -21,7 +21,7 @@
   
     <h3>Abonnements</h3>
     <div class="subscriptions-grid">
-      <app-theme-card *ngFor="let theme of subscriptions" [theme]="theme"></app-theme-card>
+      <app-theme-card *ngFor="let subscription of subscriptions" [theme]="subscription.theme"></app-theme-card>
       <div *ngIf="subscriptions.length === 0" class="no-subscriptions">
         Vous n'êtes abonné à aucun thème pour le moment.
       </div>

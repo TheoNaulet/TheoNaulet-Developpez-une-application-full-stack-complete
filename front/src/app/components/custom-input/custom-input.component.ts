@@ -28,11 +28,11 @@ export class CustomInputComponent implements ControlValueAccessor {
     this.innerValue = value || ''; 
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

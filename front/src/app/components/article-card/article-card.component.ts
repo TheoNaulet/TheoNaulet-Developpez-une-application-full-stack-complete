@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Article } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-article-card',
@@ -6,5 +7,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./article-card.component.scss'],
 })
 export class ArticleCardComponent {
-  @Input() article: any;
+  @Input() article: Article={
+    id: 0,
+    title: '',
+    content: '',
+    themeId: undefined,
+    createdAt: '',
+    updatedAt: ''
+  };
 }

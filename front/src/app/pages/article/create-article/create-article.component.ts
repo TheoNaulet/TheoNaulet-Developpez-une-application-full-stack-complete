@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ArticleService } from 'src/app/services/article.service';
 import { ThemeService } from 'src/app/services/theme.service';
+import { Theme } from 'src/app/models/theme.model';
+import { Article, ArticleFormData } from 'src/app/models/article.model';
 
 @Component({
   selector: 'app-create-article',
@@ -10,8 +12,8 @@ import { ThemeService } from 'src/app/services/theme.service';
 })
 export class CreateArticleComponent implements OnInit {
   
-  themes: any[] = []; // Liste des thèmes récupérés
-  article = {
+  themes: Theme[] = [];
+  article: ArticleFormData = {
     themeId: undefined,
     title: '',
     content: ''
@@ -25,11 +27,11 @@ export class CreateArticleComponent implements OnInit {
 
   loadThemes() {
     this.themeService.getAllThemes().subscribe({
-      next: (response) => {
+      next: (response: Theme[]) => {
         this.themes = response;
         console.log("Thèmes récupérés :", this.themes);
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Erreur lors de la récupération des thèmes", error);
       }
     });
@@ -48,11 +50,11 @@ export class CreateArticleComponent implements OnInit {
     console.log("Création de l'article :", this.article);
 
     this.articleService.createArticle(this.article).subscribe({
-      next: (response) => {
+      next: (response: Article) => {
         console.log("Article créé avec succès :", response);
         this.goBack();
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error("Erreur lors de la création de l'article", error);
       }
     });
