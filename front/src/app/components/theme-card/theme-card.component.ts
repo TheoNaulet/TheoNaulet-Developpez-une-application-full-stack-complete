@@ -1,14 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ThemeService } from '../../services/theme.service';
 import { AuthService } from '../../services/auth.service';
 import { Theme } from 'src/app/models/theme.model';
+import { DeviceDetectorService } from 'src/app/services/device-detector.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-theme-card',
   templateUrl: './theme-card.component.html',
   styleUrls: ['./theme-card.component.scss'],
 })
-export class ThemeCardComponent implements OnInit {
+export class ThemeCardComponent implements OnInit, OnDestroy {
   @Input() theme: Theme = {
     id: 0,
     title: '',
@@ -16,14 +19,32 @@ export class ThemeCardComponent implements OnInit {
     isSubscribed: false
   };
   userId: number = 0;
+  deviceType: 'desktop' | 'mobile' = 'desktop';
+  private destroy$ = new Subject<void>();
 
   constructor(
     private themeService: ThemeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private deviceDetectorService: DeviceDetectorService
   ) {}
 
   ngOnInit() {
     this.userId = this.authService.getCurrentUserId();
+    
+    // Définir le type d'appareil initial
+    this.deviceType = this.deviceDetectorService.getDeviceType();
+
+    // S'abonner aux changements de taille d'écran
+    this.deviceDetectorService.isMobile$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isMobile => {
+        this.deviceType = isMobile ? 'mobile' : 'desktop';
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   toggleSubscription() {
@@ -33,21 +54,25 @@ export class ThemeCardComponent implements OnInit {
     }
   
     if (this.theme.isSubscribed) {
-      this.themeService.unsubscribeToTheme(this.userId, this.theme.id).subscribe({
-        next: () => {
-          this.theme = { ...this.theme, isSubscribed: false };
-          console.log(`Désabonné au thème ${this.theme.id}`);
-        },
-        error: (err: Error) => console.error('Erreur désabonnement', err),
-      });
+      this.themeService.unsubscribeToTheme(this.userId, this.theme.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.theme = { ...this.theme, isSubscribed: false };
+            console.log(`Désabonné au thème ${this.theme.id}`);
+          },
+          error: (err: Error) => console.error('Erreur désabonnement', err),
+        });
     } else {
-      this.themeService.subscribeToTheme(this.userId, this.theme.id).subscribe({
-        next: () => {
-          this.theme = { ...this.theme, isSubscribed: true };
-          console.log(`Abonné au thème ${this.theme.id}`);
-        },
-        error: (err: Error) => console.error('Erreur abonnement', err),
-      });
+      this.themeService.subscribeToTheme(this.userId, this.theme.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.theme = { ...this.theme, isSubscribed: true };
+            console.log(`Abonné au thème ${this.theme.id}`);
+          },
+          error: (err: Error) => console.error('Erreur abonnement', err),
+        });
     }
   }
 }
