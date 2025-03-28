@@ -8,10 +8,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  user={
-    emailOrUsername:"",
-    password:""
-  }
+  user = {
+    emailOrUsername: "",
+    password: ""
+  };
+
+  errorMessage: string | null = null; 
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -20,6 +22,7 @@ export class LoginComponent {
   }
 
   onLogin() {
+    this.errorMessage = null;
     this.authService.login(this.user.emailOrUsername, this.user.password).subscribe({
       next: (response) => {
         console.log('Connexion réussie', response);
@@ -27,6 +30,7 @@ export class LoginComponent {
       },
       error: (error) => {
         console.error('Erreur de connexion', error);
+        this.errorMessage = "Identifiants incorrects. Veuillez réessayer."; 
       }
     });
   }
