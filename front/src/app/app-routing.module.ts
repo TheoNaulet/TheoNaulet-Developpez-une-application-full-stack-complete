@@ -8,6 +8,7 @@ import { ArticleComponent } from './pages/article/article.component';
 import { CreateArticleComponent } from './pages/article/create-article/create-article.component';
 import { ThemesComponent } from './pages/themes/themes.component';
 import { MeComponent } from './pages/me/me.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
 
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'create-article', component: CreateArticleComponent, canActivate: [AuthGuard] },
   { path: 'themes', component: ThemesComponent, canActivate: [AuthGuard] },
   { path: 'me', component: MeComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '' } // Redirection vers la page d'accueil pour les routes inconnues
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '404' } // Redirection vers la page 404 pour les routes inconnues
 ];
 
 @NgModule({

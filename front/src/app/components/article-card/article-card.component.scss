@@ -8,18 +8,21 @@
     flex: 1;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    max-width: 50vw;
-    min-width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .touchable-article-card {
     text-decoration: none;
     color: inherit;
+    display: block;
+    width: 100%;
   }
   
   h3 {
     font-weight: bold;
     margin-bottom: 5px;
+    word-break: break-word;
   }
   
   .meta {
@@ -28,11 +31,13 @@
     font-size: 14px;
     color: gray;
     margin-bottom: 10px;
+    flex-wrap: wrap;
   }
   
   p {
     font-size: 14px;
     color: black;
+    word-break: break-word;
   }
   
 
@@ -40,5 +45,6 @@
     .article-card {
       max-width: 100%;
       width: 100%;
+      min-width: auto;
     }
   }

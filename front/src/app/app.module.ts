@@ -25,6 +25,7 @@ import { ThemeCardComponent } from './components/theme-card/theme-card.component
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { AuthGuard } from './services/auth.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'article/create', component: CreateArticleComponent,canActivate: [AuthGuard] },
@@ -37,7 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ArticleComponent, CreateArticleComponent, ThemesComponent, LoginComponent, SignupComponent, MeComponent, CustomButtonComponent, CustomInputComponent, NavbarComponent, ArticlesComponent, ArticleCardComponent, ThemeCardComponent, MeComponent],
+  declarations: [AppComponent, HomeComponent, ArticleComponent, CreateArticleComponent, ThemesComponent, LoginComponent, SignupComponent, MeComponent, CustomButtonComponent, CustomInputComponent, NavbarComponent, ArticlesComponent, ArticleCardComponent, ThemeCardComponent, MeComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
