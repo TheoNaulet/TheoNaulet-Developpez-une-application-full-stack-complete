@@ -1,7 +1,8 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isAuthenticated: boolean = false;
   showFullNav: boolean = false;
   isMobile: boolean = window.innerWidth <= 768; 
-  private authSubscription: Subscription | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -21,24 +22,38 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isAuthenticated = this.authService.isLoggedIn();
     
     // Subscribe to auth state changes
-    this.authSubscription = this.authService.authState$.subscribe(
-      isAuthenticated => {
+    this.authService.authState$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isAuthenticated => {
         this.isAuthenticated = isAuthenticated;
-      }
-    );
+        
+        // Si l'utilisateur se déconnecte, fermer le menu mobile
+        if (!isAuthenticated) {
+          this.showFullNav = false;
+        }
+      });
+    
+    // Fermer le menu mobile lors d'un changement de route
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.showFullNav = false;
+      });
   }
 
   ngOnDestroy() {
-    // Clean up subscription when component is destroyed
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    // Clean up subscriptions
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get shouldShowNavbar(): boolean {
     const route = this.router.url;
+    // Ne pas afficher la navbar sur la page d'accueil
     if (route === '/') return false; 
-    if (route === '/login' || route === '/signup') return true; 
     return true; 
   }
 
@@ -63,5 +78,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.showFullNav = false;
     }
   }
-
 }
