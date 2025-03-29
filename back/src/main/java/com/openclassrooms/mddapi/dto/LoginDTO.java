@@ -1,31 +1,55 @@
 package com.openclassrooms.mddapi.dto;
 
-/**
- * DTO for holding user login information.
- */
-public class LoginDTO {
-    private String emailOrUsername; // User's email address or username
-    private String password; // User's password
+import lombok.Data;
 
-    // Getters and setters
+/**
+ * DTO for user login credentials.
+ * Contains the information needed to authenticate a user in the system.
+ */
+@Data
+public class LoginDTO {
+    /**
+     * Email or username of the user attempting to log in.
+     * Supports both email and username for flexibility in authentication.
+     */
+    private String emailOrUsername;
+
+    /**
+     * Password of the user attempting to log in.
+     * Should be sent in plain text and will be hashed for verification.
+     */
+    private String password;
+
+    /**
+     * Getter for the email or username field.
+     * 
+     * @return The email or username used for authentication
+     */
     public String getEmailOrUsername() {
         return emailOrUsername;
     }
 
     /**
-     * Sets the user's email address or username.
+     * Setter for the email or username field.
+     * 
      * @param emailOrUsername a valid email address or username
      */
     public void setEmailOrUsername(String emailOrUsername) {
         this.emailOrUsername = emailOrUsername;
     }
 
+    /**
+     * Getter for the password field.
+     * 
+     * @return The plain-text password used for authentication
+     */
     public String getPassword() {
         return password;
     }
 
     /**
-     * Sets the user's password.
+     * Setter for the password field.
+     * 
      * @param password the plain-text password
      */
     public void setPassword(String password) {

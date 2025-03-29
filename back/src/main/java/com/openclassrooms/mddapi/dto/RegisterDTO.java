@@ -1,13 +1,27 @@
 package com.openclassrooms.mddapi.dto;
 
 /**
- * Data Transfer Object for user registration.
+ * DTO for user registration information.
+ * Contains the essential information needed to create a new user account.
  */
 public class RegisterDTO {
+    /**
+     * Username for the new user.
+     * Must be unique and used for identification in the system.
+     */
+    private String username;
 
-    private String username; // User's username
-    private String email; // User's email address
-    private String password; // User's password (plain text, to be hashed later)
+    /**
+     * Email address for the new user.
+     * Must be unique and used for communication and authentication.
+     */
+    private String email;
+
+    /**
+     * Password for the new user.
+     * Will be hashed before storage for security.
+     */
+    private String password;
 
     /**
      * Gets the user's username.
@@ -35,14 +49,14 @@ public class RegisterDTO {
 
     /**
      * Sets the user's email address.
-     * @param email a valid email address
+     * @param email the user's email
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Gets the user's password.
+     * Gets the user's password (plain text).
      * @return the user's password
      */
     public String getPassword() {
@@ -51,8 +65,7 @@ public class RegisterDTO {
 
     /**
      * Sets the user's password.
-     * This should be hashed before being stored in the database.
-     * @param password the plain text password
+     * @param password the user's password
      */
     public void setPassword(String password) {
         this.password = password;
