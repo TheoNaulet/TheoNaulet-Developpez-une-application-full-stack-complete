@@ -56,6 +56,20 @@ public class ArticleService {
     }
 
     /**
+     * Crée un nouvel article en vérifiant l'authentification de l'utilisateur.
+     */
+    public Article createArticleWithAuth(CreateArticleDTO createArticleDTO, String userEmail) {
+        if (userEmail == null) {
+            throw new RuntimeException("Utilisateur non authentifié !");
+        }
+    
+        User author = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé !"));
+    
+        return createArticle(createArticleDTO, author);
+    }
+
+    /**
      * Récupère tous les articles.
      */
     public List<ArticleDTO> getAllArticles() {
