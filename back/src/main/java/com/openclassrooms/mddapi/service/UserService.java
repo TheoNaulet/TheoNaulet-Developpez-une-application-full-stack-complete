@@ -5,16 +5,19 @@ import com.openclassrooms.mddapi.dto.UserCreationDTO;
 import com.openclassrooms.mddapi.dto.UserDTO;
 import com.openclassrooms.mddapi.model.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+/**
+ * Service class for managing users in the system.
+ * Handles operations related to creating, retrieving, updating, and deleting users.
+ */
 @Service
 public class UserService {
 
@@ -22,23 +25,37 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Constructor injection for required dependencies.
+     *
+     * @param userRepository Repository for managing users
+     * @param passwordEncoder Password encoder for secure password storage
+     */
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     /**
-     * Crée un nouvel utilisateur.
+     * Creates a new user.
+     * 
+     * @param userDTO The DTO containing user creation information
+     * @return The created user
+     * @throws RuntimeException if user with the same email or username already exists
      */
     public User createUser(UserCreationDTO userDTO) {
+        // Check if user with the same email already exists
         if (userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
             throw new RuntimeException("Un utilisateur avec cet email existe déjà !");
         }
 
+        // Check if user with the same username already exists
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new RuntimeException("Un utilisateur avec ce nom d'utilisateur existe déjà !");
         }
 
+        // Create a new user
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
@@ -46,19 +63,25 @@ public class UserService {
         // user.setCreatedAt(LocalDateTime.now());
         // user.setUpdatedAt(LocalDateTime.now());
 
+        // Save the user to the database
         return userRepository.save(user);
     }
 
-
     /**
-     * Récupère tous les utilisateurs.
+     * Retrieves all users in the system.
+     * 
+     * @return List of all users
      */
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     /**
-     * Récupère un utilisateur par son ID.
+     * Retrieves a user by their ID.
+     * 
+     * @param id The ID of the user to retrieve
+     * @return The requested user
+     * @throws RuntimeException if user is not found
      */
     public User getUserById(Long id) {
         return userRepository.findById(id)
@@ -66,7 +89,12 @@ public class UserService {
     }
 
     /**
-     * Met à jour un utilisateur.
+     * Updates an existing user.
+     * 
+     * @param id The ID of the user to update
+     * @param userDTO The DTO containing updated user information
+     * @return The updated user
+     * @throws RuntimeException if user is not found or email/username is already in use
      */
     public User updateUser(Long id, UserDTO userDTO) {
         User user = getUserById(id);
@@ -93,11 +121,15 @@ public class UserService {
         
         user.setUpdatedAt(LocalDate.now());
 
+        // Save the updated user
         return userRepository.save(user);
     }
 
     /**
-     * Supprime un utilisateur par ID.
+     * Deletes a user by their ID.
+     * 
+     * @param id The ID of the user to delete
+     * @throws RuntimeException if user is not found
      */
     public void deleteUser(Long id) {
         User user = getUserById(id);
