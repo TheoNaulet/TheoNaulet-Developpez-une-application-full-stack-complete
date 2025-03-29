@@ -50,6 +50,6 @@ export class ArticlesComponent implements OnInit {
   }
 
   goToCreateArticle() {
-    this.router.navigate(['/article/create']);
+    this.router.navigate(['/create-article']);
   }
 }
