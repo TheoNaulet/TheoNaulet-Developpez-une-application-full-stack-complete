@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +27,9 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final UserRepository userRepository;
 
     public ArticleController(ArticleService articleService, UserRepository userRepository) {
         this.articleService = articleService;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -44,7 +43,7 @@ public class ArticleController {
         @ApiResponse(responseCode = "404", description = "User not found")
     })
     @PostMapping
-    public ResponseEntity<Article> createArticle(@RequestBody CreateArticleDTO createArticleDTO) {
+    public ResponseEntity<Article> createArticle(@Valid @RequestBody CreateArticleDTO createArticleDTO) {
         try {
             String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
             Article createdArticle = articleService.createArticleWithAuth(createArticleDTO, userEmail);
@@ -93,7 +92,7 @@ public class ArticleController {
         @ApiResponse(responseCode = "404", description = "Article not found")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody ArticleDTO articleDTO) {
+    public ResponseEntity<Article> updateArticle(@Valid @PathVariable Long id, @RequestBody ArticleDTO articleDTO) {
         return ResponseEntity.ok(articleService.updateArticle(id, articleDTO));
     }
 
