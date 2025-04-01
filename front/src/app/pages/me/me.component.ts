@@ -56,7 +56,6 @@ export class MeComponent implements OnInit, OnDestroy {
   loadSubscriptions() {
     this.themeService.getAllSubscribedThemes(this.userId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: Subscription[]) => {
-        console.log("Subscribed themes processed:", response);
         this.subscriptions = response;
       },
       error: (error: Error) => {

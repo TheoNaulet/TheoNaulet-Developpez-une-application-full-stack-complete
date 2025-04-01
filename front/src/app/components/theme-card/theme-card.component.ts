@@ -59,7 +59,6 @@ export class ThemeCardComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.theme = { ...this.theme, isSubscribed: false };
-            console.log(`Désabonné au thème ${this.theme.id}`);
           },
           error: (err: Error) => console.error('Erreur désabonnement', err),
         });
@@ -69,7 +68,6 @@ export class ThemeCardComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.theme = { ...this.theme, isSubscribed: true };
-            console.log(`Abonné au thème ${this.theme.id}`);
           },
           error: (err: Error) => console.error('Erreur abonnement', err),
         });

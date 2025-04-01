@@ -40,8 +40,6 @@ export class ThemeService implements OnDestroy {
   getAllSubscribedThemes(userId: number): Observable<Subscription[]> {
     return this.http.get<SubscriptionResponse[]>(`${this.apiUrl}/subscriptions/user/${userId}`).pipe(
       map(response => {
-        console.log('API response for subscriptions:', response);
-        
         // Transformer les données pour s'assurer qu'elles correspondent à l'interface Subscription
         return response.map(item => {
           // Si l'item a déjà une structure valide avec une propriété theme

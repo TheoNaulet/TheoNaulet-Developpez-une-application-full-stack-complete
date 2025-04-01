@@ -21,10 +21,8 @@ export class SignupComponent {
   }
 
   onSignup() {
-    console.log(this.user.username, this.user.email, this.user.password)
     this.authService.register(this.user.username, this.user.email, this.user.password).subscribe({
       next: (response) => {
-        console.log('Inscription réussie', response);
         this.router.navigate(['/articles']);
       },
       error: (error) => {

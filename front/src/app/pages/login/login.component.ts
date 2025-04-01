@@ -25,7 +25,6 @@ export class LoginComponent {
     this.errorMessage = null;
     this.authService.login(this.user.emailOrUsername, this.user.password).subscribe({
       next: (response) => {
-        console.log('Connexion réussie', response);
         this.router.navigate(['/articles']);
       },
       error: (error) => {
