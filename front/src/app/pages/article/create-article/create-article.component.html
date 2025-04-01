@@ -1,0 +1,30 @@
+<div class="create-article-container">
+  <button mat-icon-button class="back-button" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <h2>Créer un nouvel article</h2>
+
+  <form (submit)="createArticle()">
+    
+    <!-- Sélection du thème (Styled Select) -->
+    <div class="input-group">
+      <label for="theme">Sélectionner un thème</label>
+      <select [(ngModel)]="article.themeId" name="theme" class="custom-select" required>
+        <option value="" disabled selected>Choisir un thème</option>
+        <option *ngFor="let theme of themes" [value]="theme.id">
+          {{ theme.title }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Titre -->
+    <app-custom-input label="Titre de l’article" [(ngModel)]="article.title" name="title"></app-custom-input>
+    
+    <!-- Contenu -->
+    <app-custom-input label="Contenu de l’article" [(ngModel)]="article.content" name="content" type="textarea"></app-custom-input>
+
+    <!-- Bouton de création -->
+    <app-custom-button label="Créer" type="primary"></app-custom-button>
+  </form>
+</div>

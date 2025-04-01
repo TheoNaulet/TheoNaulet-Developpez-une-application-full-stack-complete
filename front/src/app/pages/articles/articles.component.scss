@@ -1,0 +1,40 @@
+.articles-container {
+  padding: 20px;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.rotated {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  column-gap: 50px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .articles-grid {
+    grid-template-columns: 1fr; 
+    width: 100%;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}

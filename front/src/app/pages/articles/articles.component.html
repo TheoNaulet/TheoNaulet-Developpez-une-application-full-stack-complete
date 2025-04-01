@@ -1,0 +1,15 @@
+<div class="articles-container">
+    <div class="header">
+      <button mat-raised-button color="primary" (click)="goToCreateArticle()">Créer un article</button>
+      <span class="sort" (click)="sortByDate()">
+        Trier par 
+        <mat-icon [ngClass]="{'rotated': !isDescending}">arrow_downward</mat-icon>
+      </span>
+      
+    </div>
+  
+    <div class="articles-grid">
+      <app-article-card *ngFor="let article of articles" [article]="article"></app-article-card>
+    </div>
+  </div>
+  

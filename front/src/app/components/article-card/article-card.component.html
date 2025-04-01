@@ -1,0 +1,10 @@
+<div class="article-card">
+  <a [routerLink]="['/article', article.id]" class="touchable-article-card">
+    <h3>{{ article.title }}</h3>
+    <div class="meta">
+      <span>{{ article.date }}</span>
+      <span>{{ article.author }}</span>
+    </div>
+    <p>{{ article.content | truncate: deviceType }}</p>
+  </a>
+</div>

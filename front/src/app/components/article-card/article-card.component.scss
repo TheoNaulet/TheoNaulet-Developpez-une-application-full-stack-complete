@@ -1,0 +1,50 @@
+.article-card {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .touchable-article-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+  }
+  
+  h3 {
+    font-weight: bold;
+    margin-bottom: 5px;
+    word-break: break-word;
+  }
+  
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  
+  p {
+    font-size: 14px;
+    color: black;
+    word-break: break-word;
+  }
+  
+
+  @media (max-width: 768px) {
+    .article-card {
+      max-width: 100%;
+      width: 100%;
+      min-width: auto;
+    }
+  }

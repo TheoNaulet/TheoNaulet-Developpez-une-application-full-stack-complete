@@ -5,3 +5,28 @@
   align-items: center;
   flex-direction: column;
 }
+
+@media (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .logo{
+    width: 300px;
+  }
+
+  .mat-raised-button {
+    width: 50%;
+    font-weight: 400;
+  }
+}
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  width: 30%;
+  justify-content: space-between;
+  gap: 15px;
+}

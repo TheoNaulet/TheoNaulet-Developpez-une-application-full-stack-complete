@@ -1,0 +1,86 @@
+.me-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  max-width: 500px; 
+  margin: 30px auto;
+}
+
+form ::ng-deep .form-group {
+  width: 100%;
+}
+
+form ::ng-deep mat-form-field {
+  width: 100%;
+}
+
+form ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+  font-size: 16px;
+}
+
+form ::ng-deep .mat-mdc-text-field-wrapper {
+  height: auto;
+  padding: 4px 0;
+}
+
+form ::ng-deep input.mat-mdc-input-element,
+form ::ng-deep textarea.mat-mdc-input-element {
+  padding: 12px;
+  font-size: 16px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 12px 20px;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px 20px;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+hr {
+  margin: 30px 0;
+  width: 100%;
+}
+
+.subscriptions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.no-subscriptions {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .subscriptions-grid {
+    grid-template-columns: 1fr;
+  }
+}
