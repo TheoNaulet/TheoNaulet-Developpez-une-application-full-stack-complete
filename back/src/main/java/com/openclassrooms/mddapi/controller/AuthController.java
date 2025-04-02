@@ -31,9 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authentication", description = "Authentication API for user registration, login, and profile management")
 public class AuthController {
 
-    private final JwtService jwtService;
     private final UserService userService;
-    private final AuthenticationManager authenticationManager;
     private final AuthService authService;
 
     /**
@@ -45,9 +43,7 @@ public class AuthController {
      * @param authService             service for authentication operations
      */
     public AuthController(JwtService jwtService, UserService userService, AuthenticationManager authenticationManager, AuthService authService) {
-        this.jwtService = jwtService;
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
         this.authService = authService;
     }
 
@@ -70,7 +66,7 @@ public class AuthController {
         )
     })
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> registerUser(@RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<AuthResponseDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
         try {
             AuthResponseDTO authResponse = authService.register(registerDTO);
             return ResponseEntity.ok(authResponse);

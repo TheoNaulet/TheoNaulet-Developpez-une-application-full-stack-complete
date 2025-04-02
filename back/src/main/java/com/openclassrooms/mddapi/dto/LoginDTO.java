@@ -1,5 +1,6 @@
 package com.openclassrooms.mddapi.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -12,12 +13,14 @@ public class LoginDTO {
      * Email or username of the user attempting to log in.
      * Supports both email and username for flexibility in authentication.
      */
+    @NotBlank(message = "Email or username is required")
     private String emailOrUsername;
 
     /**
      * Password of the user attempting to log in.
      * Should be sent in plain text and will be hashed for verification.
      */
+    @NotBlank(message = "Password is required")
     private String password;
 
     /**

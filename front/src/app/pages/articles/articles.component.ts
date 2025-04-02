@@ -21,7 +21,6 @@ export class ArticlesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("ArticlesComponent initialized");
     this.loadArticles();
   }
 
@@ -30,7 +29,6 @@ export class ArticlesComponent implements OnInit {
 
     this.articleService.getArticlesBySubscribedThemes(userId).subscribe({
       next: (response: Article[]) => {
-        console.log("Articles reçus :", response);
         this.articles = response; 
       },
       error: (error: Error) => {

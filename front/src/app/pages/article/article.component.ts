@@ -45,8 +45,6 @@ export class ArticleComponent implements OnInit {
 
     this.articleService.getArticleById(this.articleId).subscribe({
       next: (response: Article) => {
-        console.log("Article reçu :", response);
-        
         this.article = {
           title: response.title,
           date: response.createdAt,
@@ -76,7 +74,6 @@ export class ArticleComponent implements OnInit {
   
     this.articleService.addComment(this.articleId, this.currentUserId, this.newComment).subscribe({
       next: (response: Comment) => {
-        console.log("Commentaire ajouté :", response);
   
         this.comments.push({
           username: response.senderUsername || "Moi",

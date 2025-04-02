@@ -29,7 +29,6 @@ export class CreateArticleComponent implements OnInit {
     this.themeService.getAllThemes().subscribe({
       next: (response: Theme[]) => {
         this.themes = response;
-        console.log("Thèmes récupérés :", this.themes);
       },
       error: (error: Error) => {
         console.error("Erreur lors de la récupération des thèmes", error);
@@ -47,11 +46,8 @@ export class CreateArticleComponent implements OnInit {
       return;
     }
 
-    console.log("Création de l'article :", this.article);
-
     this.articleService.createArticle(this.article).subscribe({
       next: (response: Article) => {
-        console.log("Article créé avec succès :", response);
         this.goBack();
       },
       error: (error: Error) => {
